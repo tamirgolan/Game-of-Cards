@@ -1,0 +1,57 @@
+from unittest import TestCase
+from Deack_of_Cards import Deack_of_Cards
+from  CardsGame import CardsGame
+from unittest.mock import patch
+
+
+class TestCardgame(TestCase):
+
+   def setUp(self):
+       self.cardgame_1 = CardsGame ("Asi","Albert",20)
+
+    def test_init_valid_arguments_1(self):
+        self.assertEqual(self.cardgame_1.Cards,20)
+        self.assertEqual(self.cardgame_1.Player1,"sara",25)
+        self.assertEqual(self.cardgame_1.Player2,"tamir",25)
+        self.assertEqual(len(self.cardgame_1.List_players),2)
+
+    def test_init_valid_2(self):
+        if type(self.cardgame_1.Deck) == Deack_of_Cards:
+            pass
+        else:
+            self.fail()
+
+    def test_init_(self):
+        with patch('Deack_of_Cards.Deack_of_Cards.new_game') as new_game_mocked:
+            self.Cardgame_2=CardsGame()
+            new_game_mocked.assert_called_with()
+
+    def test_newGame1(self):
+        with patch('Deack_of_Cards.Deack_of_Cards.shuffle') as mocked_Shuffle:
+            self.Cardgame_2=CardsGame()
+            mocked_Shuffle.assert_called_with()
+
+   def test_new_game2(self):
+       with patch('Player.Player.set_hand') as mocked_set_hand:
+           self.Cardgame2 = CardsGame()
+           mocked_set_hand.assert_called_with(self.Cardgame2.Deck)
+
+
+    def test_new_game3(self):
+        self.Cardgame_1.Deck.list3=self.Cardgame_1.Deck.list[:16]
+        try:
+            self.Cardgame_1.new_game()
+        except:
+            pass
+        else:
+            self.fail()
+
+
+
+    def test_winner(self):
+        self.assertEqual(len(self.Cardgame_1.Player1.nume)>len(self.Cardgame_1.Player1),self.Cardgame_1.Player1)
+        self.assertEqual(len(self.Cardgame_1.Player2.nume)>len(self.Cardgame_1.Player2),self.Cardgame_1.Player2)
+        self.assertEqual(len(self.Cardgame_1.Player1.nume)==len(self.Cardgame_2.Player1),None)
+
+   def tearDown(self) :
+       print("end!!!!!!!!!!!!!!!!")
