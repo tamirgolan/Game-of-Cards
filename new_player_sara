@@ -1,0 +1,187 @@
+[12:29, 9/11/2022] +972 53-428-3861: from mypogrm.Card import Card
+from mypogrm.Dackofcards import Dackofcards
+from mypogrm.Player import Player
+from random import *
+
+class Cardgame:
+
+    def _init_(self,name1:str,name2:str,Num_cards:int=26):
+        if Num_cards<10 or Num_cards>26:
+            Num_cards=26
+
+
+        self.Deck = Dackofcards()
+        self.Cards = Num_cards
+        self.Player1 = Player(name1,Num_cards)
+        self.Player2 = Player(name2,Num_cards)
+        self.list_players = [self.Player1,self.Player2]
+        self.New_Game()
+
+    def _str_(self):
+        return f"{self.Deck}{self.Cards}{self.Player1}{self.Player2}{self.list_players}"
+
+    def _repr_(self):
+       return f"{self.Deck}{self.Cards}{self.Player1}{self.Player2}{self.list_players}"
+
+    def New_Game(self):
+        if len(self.Deck.pack)<52:
+            raise TypeError("!game is on! You can't shuffle in the middle of a game.")
+        self.Deck.Mix_The_Pack()
+
+        for i in self.list_players:
+            i.set_hand(self.Deck)
+
+        self.Player1= self.list_players[0]
+        self.Player2= self.list_players[1]
+
+
+    def Winner(self):
+        if len(self.Player1.player_cards) > len(self.Player2.player_cards):
+            return self.Player1
+        elif len(self.Player2.player_cards) > len(self.Player1.player_cards):
+            return self.Player2
+        else:
+            return None
+[12:30, 9/11/2022] +972 53-428-3861: from unittest import TestCase
+from mypogrm.Player import Player
+from mypogrm.Dackofcards import Dackofcards
+from mypogrm.Card import Card
+
+class TestPlayer(TestCase):
+    def setUp(self):
+        self.p_1=Player("sara",25)
+    #בדיקה למקרה תקין
+ # Test a valid case of _init_
+    def test_init_1(self):
+        self.assertEqual(self.p_1.name,"sara")
+        self.assertEqual(self.p_1.num_of_cards,25)
+
+    # Test default(valid) parameters to _init_
+    #בדיקה מספר ריק(אמור להיות תקין)
+
+    def test_init_2(self):
+        p_2=Player("roy",)
+        self.assertEqual(self.p_2.name,"roy" )
+        self.assertEqual(self.p_2.num_of_cards,)
+
+    # Test init with wrong type of arguments
+    #בדיקה להזנת שם ריק
+    def test_init_invalid_arguments_type(self):
+    #
+        self.assertEqual(self.p_1.name,'')
+        self.assertEqual(self.p_1.num_of_cards,25)
+
+    #בדיקה אם הקונסטרקטור מקבל מספר שלילי
+
+    def test_init_invalid_arguments_type_2(self):
+        self.assertEqual(self.p_1.name,"sara")
+        self.assertEqual(self.p_1.num_of_cards,-15)
+
+
+# מתודה שבודקת אם הקונסטרקטור מקבל את הספרה 0
+    def test_init_invalid_arguments_type_3(self):
+        self.assertEqual(self.p_1.name,"sara")
+        self.assertEqual(self.p_1.num_of_cards,0)
+
+
+    def tearDown(self):
+        print("I am tear down")
+
+    #בדיקה אם הפנקציה מקבלת משתנה שהוא לא מסוג קלפים
+    def test_set_hand_1(self,deal_one_mocked):
+        self.card = Card("♣", "Ace")
+        self.Deck_1 = Dackofcards()
+        self.Player1.sethand(self.Deck1)
+        self.assertTrue(self.Player1.list1[0] == self.card1)
+
+    def test_get_card(self): # בדיקה שהקלף האחרון מחבילת המשתמש אכן נשלף ואורך הרשימה התעדכן
+        self.Deck1 = Dackofcards()
+        self.p_1.set_hand(self.Deck1)
+        self.last = self.p_1.list1[-1]
+        self.assertEqual(self.last, self.p_1.getCard())
+        self.assertEqual((len(self.p_1.list1)),4)
+
+
+    def test_add_card_1(self):#בדיקה שהקלף מתווסף לחבילת הקלפים של השחקן
+        self.a_card = Card("Ace","♣")
+        # self.dack_1=Dackofcards()
+        # self.p_1.set_hand(self.dack_1)
+        self.p_1.add_card(self.a_card)
+        self.assertEqual(self.p_1.player_cards[-1],self.a_card)
+
+    #a mathod that chek the ...
+    def test_add_card2(self):
+        try:
+            self.p_1.add_card("Ace")
+        except:
+            pass
+        else:from unittest import TestCase
+from mypogrm.Player import Player
+
+
+
+
+
+class TestPlayer(TestCase):
+    def setUp(self):
+        self.p_1=Player("sara",25)
+    #בדיקה למקרה תקין
+ # Test a valid case of _init_
+    def test_init_1(self):
+        self.assertEqual(self.p_1.name,"sara")
+        self.assertEqual(self.p_1.num_of_cards,23)
+
+    # Test default(valid) parameters to _init_
+    #בדיקה מספר ריק(אמור להיות תקין)
+
+    def test_init_2(self):
+        self.assertEqual(self.p_1.name,"roy" )
+        self.assertEqual(self.p_1.num_of_cards,)
+
+    # Test init with wrong type of arguments
+    #בדיקה להזנת שם ריק
+    def test_init_invalid_arguments_type(self):
+    #
+        self.assertEqual(self.p_1.name,'')
+        self.assertEqual(self.p_1.num_of_cards,25)
+
+    #בדיקה אם הקונסטרקטור מקבל מספר שלילי
+
+    def test_init_invalid_arguments_type_2(self):
+        self.assertEqual(self.p_1.name,"sara")
+        self.assertEqual(self.p_1.num_of_cards,-15)
+
+
+# מתודה שבודקת אם הקונסטרקטור מקבל את הספרה 0
+    def test_init_invalid_arguments_type_3(self):
+        self.assertEqual(self.p_1.name,"sara")
+        self.assertEqual(self.p_1.num_of_cards,0)
+
+
+    def tearDown(self):
+        print("I am tear down")
+
+    #בדיקה אם הפנקציה מקבלת משתנה שהוא לא מסוג כלפים
+    def test_set_hand_1(self,):
+        self.card = Card("♣", "Ace")
+        self.Deck_1 = Dackofcards()
+        self.p_1.set_hand(self.card)
+        self.assertEqual(self.p_1.player_cards[-1],self.card)
+
+
+
+    def test_add_card_1(self):#בדיקה שהקלף מתווסף לחבילת הקלפים של השחקן
+        self.a_card = Card("Ace","♣")
+        self.dack_1=Dackofcards()
+        self.p_1.set_hand(self.dack_1)
+        self.p_1.add_card(self.a_card)
+        self.assertEqual(self.p_1.player_cards[-1],self.a_card)
+
+    #a mathod that chek the ...
+    def test_add_card2(self):
+        try:
+            self.p_1.add_card(1)
+        except:
+            pass
+        else:
+            self.fail()
